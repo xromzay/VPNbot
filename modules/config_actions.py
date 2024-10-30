@@ -19,8 +19,10 @@ async def generate_config_success(update: Update, context: ContextTypes.DEFAULT_
     # create InlineKeyboardMarkup with buttons for the user to select OpenVPN or Wireguard
     buttons = [
         [
-            InlineKeyboardButton(text="OpenVPN", callback_data="openvpn"),
+            InlineKeyboardButton(text="Socks5", callback_data="socks5"),
             InlineKeyboardButton(text="WireGuard", callback_data="wireguard"),
+            InlineKeyboardButton(text="Vless", callback_data="vless"),
+            InlineKeyboardButton(text="Socks-2022", callback_data="socks22"),
         ],
         [InlineKeyboardButton("Help me choose", callback_data="suggest")],
     ]

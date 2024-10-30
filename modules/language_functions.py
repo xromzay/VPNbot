@@ -15,7 +15,7 @@ languages_dir = os.path.join(script_dir, "..", "languages")
 # define a function to get the user's language preference and the language file path
 async def get_language(update: Update, context: ContextTypes.DEFAULT_TYPE) -> tuple:
     # define a dictionary that maps Telegram's language codes to your supported languages
-    supported_languages = {"en": "en", "ru": "ru", "fr": "fr", "es": "es", "de": "de"}
+    supported_languages = {"en": "en", "ru": "ru"}
 
     # ensure update.message is not None and has from_user with a language_code
     if (

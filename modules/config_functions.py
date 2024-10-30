@@ -29,8 +29,9 @@ async def generate_config(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # create InlineKeyboardMarkup with two buttons for the user to select product
     buttons = [
-        [InlineKeyboardButton(text="1 Week - $1", callback_data="product_a")],
-        [InlineKeyboardButton(text="1 Month - $3", callback_data="product_b")],
+        [InlineKeyboardButton(text="1 Month - 35 Rub", callback_data="product_35")],
+        [InlineKeyboardButton(text="1 Month premium - 52.5-70 Rub", callback_data="product_52")],
+        [InlineKeyboardButton(text="1 Month premium - 70+ Rub", callback_data="product_70")],
     ]
 
     products = InlineKeyboardMarkup(buttons)
@@ -66,13 +67,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     else:
         # call the corresponding handler function
-        handler_map = {"openvpn": openvpn_callback, "wireguard": wireguard_callback}
+        handler_map = {"socks5": socks5_callback, "wireguard": wireguard_callback, "vless": vless_callback, "socks22": socks22_callback}
         handler = handler_map.get(choice)
         await handler(update, context)
 
         # send a message to the user confirming the duration of their plan
         duration_message = (
-            f"Your GuardianVPN service will be active for {selected_plan}."
+            f"Your hawktuahVPN service will be active for {selected_plan}."
         )
         await context.bot.send_message(chat_id, duration_message)
         # delete the inline keyboard to prevent the user from clicking again
@@ -82,7 +83,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # send a typing indicator in the chat
 @send_upload_document_action
 # generate client config file for OpenVPN
-async def openvpn_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def socks5_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # get the user's language preference
     language, language_file_path = await get_language(update, context)
 
@@ -129,10 +130,11 @@ async def openvpn_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # await context.bot.send_message(chat_id, strings["config_generation_error"])
     else:
         # open the client config file and send it to the user
-        file_path = os.path.join(OVPN_FILE_PATH, f"{client_name}.ovpn")
-        with open(file_path, "rb") as f:
+        file_path = os.path.join(SOCKS5_FILE_PATH, f"{client_name}.txt")
+        with open(file_path, "r") as f:
+            file_contents = f.read()
             await context.bot.send_document(
-                chat_id, document=f, filename=f"{client_name}.ovpn"
+                chat_id, strings["Here is your configuration:\n\n{file_contents}"]
             )
 
     # delete the user data to prevent resending the same configuration file
@@ -140,7 +142,7 @@ async def openvpn_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.pop("duration_days", None)
 
     # delete the configuration file
-    config_file_path = os.path.join(OVPN_FILE_PATH, f"{client_name}.ovpn")
+    config_file_path = os.path.join(SOCKS5_FILE_PATH, f"{client_name}.txt")
 
     try:
         # delete the configuration file

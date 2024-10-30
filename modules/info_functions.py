@@ -18,10 +18,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # define a function to handle the /status command
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # use subprocess to run the "systemctl status openvpn" command
-    output = subprocess.check_output(["systemctl", "status", "openvpn"])
+    status_socks5  = subprocess.check_output(["systemctl", "status", "dante"])
+    status_wg = subprocess.check_output(["systemctl", "status", "wg-quick@wg0.service"])
+    status_vless = subprocess.check_output(["systemctl", "status", "xray"])
+    status_socks22 = subprocess.check_output(["systemctl", "status", "xray"])
 
     # extract the relevant line from the output
-    active_line = [line for line in output.decode().split("\n") if "Active:" in line][0]
+    active_line1 = [line for line in status.decode().split("\n") if "Active:" in line][0]
+    active_line2 = [line for line in status.decode().split("\n") if "Active:" in line][0]
+    active_line3 = [line for line in status.decode().split("\n") if "Active:" in line][0]
+    active_line4 = [line for line in status.decode().split("\n") if "Active:" in line][0]
+    active_line_sum = active_line1 + active_line2 + active_line3 + active_line4
 
     # send the extracted line back to the user
     await update.message.reply_text(active_line)

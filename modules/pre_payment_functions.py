@@ -16,22 +16,27 @@ async def select_product(update: Update, context: ContextTypes.DEFAULT_TYPE):
     product = query.data
 
     # check which product is selected and set the corresponding price, title, payload and description
-    if product == "product_a":
-        price = [LabeledPrice("1 Week", 1 * 100)]
-        title = "VPN Access Pass - 1 Week"
-        description = "Get one week of unlimited access to GuardianVPN"
-        payload = "1 Week"
-    elif product == "product_b":
-        price = [LabeledPrice("1 Month", 3 * 100)]
+    if product == "product_35":
+        price = [LabeledPrice("1 Week", 35)]
         title = "VPN Access Pass - 1 Month"
-        description = "Get one month of unlimited access to GuardianVPN"
+        description = "Get one week of access to hawktuahVPN"
+        payload = "1 Month"
+    elif product == "product_52":
+        price = [LabeledPrice("1 Month", 52)]
+        title = "VPN Access Pass - 1 Month Premium"
+        description = "Get one month of premium access to hawktuahVPN"
+        payload = "1 Month"
+    elif product == "product_70":
+        price = [LabeledPrice("1 Month SIGMIUM", 70)]
+        title = "VPN Access Pass - 1 Month SIGMIUM"
+        description = "Get one month of unlimited access to hawktuahVPN"
         payload = "1 Month"
     else:
         # handle invalid product selection by returning
         return
 
     # set the payment currency
-    currency = "USD"
+    currency = "RUB"
 
     # send the invoice to the user with the selected product price
     await context.bot.send_invoice(
